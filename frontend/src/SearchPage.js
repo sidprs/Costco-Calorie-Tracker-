@@ -266,24 +266,45 @@ const SearchPage = () => {
 
         {searchType === 'filter' && (
           <div className="filter-inputs">
-            <input
-              type="number"
-              placeholder="Max Calories"
-              value={filters.maxCalories}
-              onChange={(e) => setFilters({...filters, maxCalories: e.target.value})}
-            />
-            <input
-              type="number"
-              placeholder="Min Protein (g)"
-              value={filters.minProtein}
-              onChange={(e) => setFilters({...filters, minProtein: e.target.value})}
-            />
-            <input
-              type="number"
-              placeholder="Max Price ($)"
-              value={filters.maxPrice}
-              onChange={(e) => setFilters({...filters, maxPrice: e.target.value})}
-            />
+            <div className="filter-group">
+              <label>Max Calories</label>
+              <select
+                value={filters.maxCalories}
+                onChange={(e) => setFilters({...filters, maxCalories: e.target.value})}
+              >
+                <option value="">Any</option>
+                <option value="300">Under 300</option>
+                <option value="500">Under 500</option>
+                <option value="700">Under 700</option>
+                <option value="900">Under 900</option>
+              </select>
+            </div>
+            <div className="filter-group">
+              <label>Min Protein (g)</label>
+              <select
+                value={filters.minProtein}
+                onChange={(e) => setFilters({...filters, minProtein: e.target.value})}
+              >
+                <option value="">Any</option>
+                <option value="20">20g+</option>
+                <option value="30">30g+</option>
+                <option value="40">40g+</option>
+                <option value="50">50g+</option>
+              </select>
+            </div>
+            <div className="filter-group">
+              <label>Max Price ($)</label>
+              <select
+                value={filters.maxPrice}
+                onChange={(e) => setFilters({...filters, maxPrice: e.target.value})}
+              >
+                <option value="">Any</option>
+                <option value="2">Under $2</option>
+                <option value="3">Under $3</option>
+                <option value="4">Under $4</option>
+                <option value="5">Under $5</option>
+              </select>
+            </div>
           </div>
         )}
 

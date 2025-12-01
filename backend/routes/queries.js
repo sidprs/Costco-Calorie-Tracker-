@@ -34,34 +34,35 @@ router.get('/items/filter', async (req, res) => {
     const { maxCalories, minProtein, maxPrice } = req.query;
     const conditions = [];
     const params = [];
-    let paramCount = 1;
 
     if (maxCalories) {
-      conditions.push(`Calories <= ${paramCount}`);
+      conditions.push(`Calories <= $${params.length + 1}`);
       params.push(parseInt(maxCalories));
-      paramCount++;
     }
     if (minProtein) {
-      conditions.push(`Protein >= ${paramCount}`);
+      conditions.push(`Protein >= $${params.length + 1}`);
       params.push(parseInt(minProtein));
-      paramCount++;
     }
     if (maxPrice) {
-      conditions.push(`Price <= ${paramCount}`);
+      conditions.push(`Price <= $${params.length + 1}`);
       params.push(parseInt(maxPrice));
-      paramCount++;
     }
 
-    let query = 'SELECT * FROM Item';
+    let queryText = 'SELECT * FROM Item';
     if (conditions.length > 0) {
-      query += ' WHERE ' + conditions.join(' AND ');
+      queryText += ' WHERE ' + conditions.join(' AND ');
     }
-    query += ' ORDER BY Name';
+    queryText += ' ORDER BY Name';
 
-    console.log('Executing query:', query);
+    console.log('Executing query:', queryText);
     console.log('With params:', params);
     
-    const result = await pool.query(query, params);
+    const result = await pool.query({
+      text: queryText,
+      values: params
+    });
+    
+    console.log('Filter successful. Rows returned:', result.rows.length);
     res.json(result.rows);
   } catch (err) {
     console.error('Filter error:', err.message);
