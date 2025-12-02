@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './SearchPage.css';
 
-const SearchPage = ({ user, onLogout }) => {
+const SearchPage = ({ user, addToCart }) => {
   const [searchType, setSearchType] = useState('items');
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
@@ -11,7 +11,6 @@ const SearchPage = ({ user, onLogout }) => {
   });
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [userId, setUserId] = useState(user?.id?.toString() || '1');
 
   const API_URL = 'http://localhost:3001/api';
 
@@ -59,18 +58,6 @@ const SearchPage = ({ user, onLogout }) => {
           url = `${API_URL}/items/filter?${params.toString()}`;
           break;
           
-        case 'orders':
-          url = `${API_URL}/users/${userId}/orders`;
-          break;
-          
-        case 'favorites':
-          url = `${API_URL}/users/${userId}/favorites`;
-          break;
-          
-        case 'stats':
-          url = `${API_URL}/users/${userId}/stats`;
-          break;
-          
         default:
           url = `${API_URL}/items`;
       }
@@ -85,71 +72,23 @@ const SearchPage = ({ user, onLogout }) => {
     setLoading(false);
   };
 
-  const runSampleQuery = (type) => {
-    switch(type) {
-      case 'highProtein':
-        setSearchType('filter');
-        setFilters({ maxCalories: '', minProtein: '30', maxPrice: '' });
-        setTimeout(() => handleSearch(), 100);
-        break;
-      case 'lowCalorie':
-        setSearchType('filter');
-        setFilters({ maxCalories: '500', minProtein: '', maxPrice: '' });
-        setTimeout(() => handleSearch(), 100);
-        break;
-      case 'pizza':
-        setSearchType('items');
-        setSearchQuery('pizza');
-        setTimeout(() => handleSearch(), 100);
-        break;
-      case 'userOrders':
-        setSearchType('orders');
-        setUserId('1');
-        setTimeout(() => handleSearch(), 100);
-        break;
-      case 'stats':
-        setSearchType('stats');
-        setUserId('1');
-        setTimeout(() => handleSearch(), 100);
-        break;
-      default:
-        break;
-    }
-  };
-
   const renderResults = () => {
     if (loading) return <div className="loading">Loading...</div>;
     if (results.length === 0) return <div className="no-results">No results found</div>;
-
-    if (searchType === 'stats') {
-      const stats = results[0];
-      return (
-        <div className="stats-container">
-          <div className="stat-card">
-            <h3>Total Orders</h3>
-            <p>{stats.total_orders}</p>
-          </div>
-          <div className="stat-card">
-            <h3>Avg Calories</h3>
-            <p>{Math.round(stats.avg_calories)}</p>
-          </div>
-          <div className="stat-card">
-            <h3>Avg Protein</h3>
-            <p>{Math.round(stats.avg_protein)}g</p>
-          </div>
-          <div className="stat-card">
-            <h3>Total Spent</h3>
-            <p>${stats.total_spent}</p>
-          </div>
-        </div>
-      );
-    }
 
     if (searchType === 'items' || searchType === 'filter') {
       return (
         <div className="items-grid">
           {results.map((item, index) => (
             <div key={index} className="item-card">
+              <button 
+                className="add-to-cart-btn" 
+                onClick={() => addToCart(item)}
+                title="Add to Cart"
+              >
+                +
+              </button>
+
               <h3>{item.name}</h3>
               <div className="item-details">
                 <div className="nutrition-row">
@@ -183,80 +122,17 @@ const SearchPage = ({ user, onLogout }) => {
       );
     }
 
-    if (searchType === 'orders' || searchType === 'favorites') {
-      return (
-        <div className="orders-list">
-          {results.map((order, index) => (
-            <div key={index} className="order-card">
-              <div className="order-header">
-                <h3>Order #{order.orderid}</h3>
-                <span className="order-date">{new Date(order.date).toLocaleDateString()}</span>
-              </div>
-              <div className="order-details">
-                <div className="detail-row">
-                  <span>Total Calories</span>
-                  <span>{order.totalcalories}</span>
-                </div>
-                <div className="detail-row">
-                  <span>Protein</span>
-                  <span>{order.totalprotein}g</span>
-                </div>
-                <div className="detail-row">
-                  <span>Total</span>
-                  <span className="total-price">${order.receipt}</span>
-                </div>
-                {order.notes && <p className="notes">{order.notes}</p>}
-                {order.favorite && <span className="favorite-badge">Favorite</span>}
-              </div>
-            </div>
-          ))}
-        </div>
-      );
-    }
-
     return null;
   };
 
   return (
     <div className="search-page">
-      <header className="header">
-        <div className="header-top">
-          {user && (
-            <div className="user-info">
-              <span className="user-greeting">Hello, {user.firstName}!</span>
-              <button className="logout-btn" onClick={onLogout}>Logout</button>
-            </div>
-          )}
-        </div>
-        <svg className="costco-logo" viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg">
-          <rect x="10" y="10" width="280" height="60" rx="8" fill="#0051BA" stroke="#003D8F" strokeWidth="2"/>
-          <text x="150" y="52" fontSize="32" fontWeight="bold" fill="white" textAnchor="middle" fontFamily="Arial, sans-serif">
-            COSTCO
-          </text>
-        </svg>
-        <h1>Food Court Nutrition Tracker</h1>
-      </header>
-      
-      <div className="sample-queries">
-        <h3>Quick Searches</h3>
-        <div className="sample-buttons">
-          <button onClick={() => runSampleQuery('pizza')} className="sample-btn">Search Pizza</button>
-          <button onClick={() => runSampleQuery('highProtein')} className="sample-btn">High Protein</button>
-          <button onClick={() => runSampleQuery('lowCalorie')} className="sample-btn">Low Calorie</button>
-          <button onClick={() => runSampleQuery('userOrders')} className="sample-btn">My Orders</button>
-          <button onClick={() => runSampleQuery('stats')} className="sample-btn">Statistics</button>
-        </div>
-      </div>
-      
       <div className="search-controls">
         <div className="search-type-selector">
           <label>Search Type</label>
           <select value={searchType} onChange={(e) => setSearchType(e.target.value)}>
             <option value="items">Search Items</option>
             <option value="filter">Filter by Nutrition</option>
-            <option value="orders">My Orders</option>
-            <option value="favorites">Favorite Orders</option>
-            <option value="stats">My Statistics</option>
           </select>
         </div>
 
@@ -313,19 +189,6 @@ const SearchPage = ({ user, onLogout }) => {
                 <option value="5">Under $5</option>
               </select>
             </div>
-          </div>
-        )}
-
-        {(searchType === 'orders' || searchType === 'favorites' || searchType === 'stats') && (
-          <div className="user-input">
-            <label>User ID</label>
-            <input
-              type="number"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-              min="1"
-              max="10"
-            />
           </div>
         )}
 

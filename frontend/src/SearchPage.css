@@ -279,6 +279,7 @@
     padding: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: all 0.2s;
+    position: relative;
   }
   
   .item-card:hover {
@@ -293,6 +294,7 @@
     font-weight: 600;
     border-bottom: 2px solid #e9ecef;
     padding-bottom: 10px;
+    margin-right: 20px;
   }
   
   .item-details {
@@ -300,6 +302,35 @@
     flex-direction: column;
     gap: 10px;
   }
+
+  .add-to-cart-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 32px;
+  height: 32px;
+  background-color: #0051BA;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: all 0.2s;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #003d8f;
+  transform: scale(1.1);
+}
+
+.add-to-cart-btn:active {
+  transform: scale(0.95);
+}
   
   .nutrition-row {
     display: flex;
