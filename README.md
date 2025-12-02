@@ -7,7 +7,26 @@ You will need **two terminals** to run them simultaneously.
 
 ## Setup
 
-### 1. Install dependencies
+### 1. Set up environment
+
+**Create following .env file in root of backend directory:**
+
+```bash
+DB_USER=<your username>
+DB_HOST=localhost
+DB_NAME=costco_tracker
+DB_PASSWORD=<your password>
+DB_PORT=5432
+JWT_SECRET=costco-calorie-tracker-secret-key
+```
+
+**Database:**
+
+```bash
+createdb costco_tracker && psql -d costco_tracker -f costco.sql
+```
+
+### 2. Install dependencies
 
 **Backend:**
 
@@ -25,7 +44,7 @@ npm install
 
 ---
 
-### 2. Run the project
+### 3. Run the project
 
 Open **two terminals**:
 
