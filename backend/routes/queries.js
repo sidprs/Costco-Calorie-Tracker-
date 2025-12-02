@@ -164,4 +164,51 @@ router.get('/users/:userId/favorites', async (req, res) => {
   }
 });
 
+router.post('/orders', async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const { userId, items, totals } = req.body;
+    await client.query('BEGIN');
+    const idResult = await client.query('SELECT MAX(OrderID) as max_id FROM Orders');
+    const newOrderId = (idResult.rows[0].max_id || 1000) + 1;
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    await client.query({
+      text: `INSERT INTO Orders (OrderID, Date, Favorite, Notes, TotalCalories, TotalProtein, TotalCarbs, TotalFats, TotalFiber, Receipt, UserID)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+      values: [
+        newOrderId,
+        today,
+        false,
+        '',
+        totals.calories,
+        totals.protein,
+        totals.carbs,
+        totals.fats,
+        totals.fiber,
+        totals.price,
+        userId
+      ]
+    });
+    const itemCounts = {};
+    items.forEach(item => {
+      itemCounts[item.name] = (itemCounts[item.name] || 0) + 1;
+    });
+    for (const [itemName, quantity] of Object.entries(itemCounts)) {
+      await client.query({
+        text: 'INSERT INTO OrderItem (OrderID, ItemName, Quantity) VALUES ($1, $2, $3)',
+        values: [newOrderId, itemName, quantity]
+      });
+    }
+    await client.query('COMMIT');
+    res.status(201).json({ message: 'Order placed successfully', orderId: newOrderId });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error('Checkout error:', err.message);
+    res.status(500).json({ error: 'Checkout failed', details: err.message });
+  } finally {
+    client.release();
+  }
+});
+
 module.exports = router;

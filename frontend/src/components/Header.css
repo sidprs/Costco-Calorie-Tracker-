@@ -1,0 +1,113 @@
+.header {
+  background: white;
+  padding: 30px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.header-top {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-greeting {
+  color: #495057;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.logout-btn {
+  padding: 8px 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #c82333;
+}
+
+.costco-logo {
+  width: 300px;
+  height: 80px;
+  margin: 0 auto 15px;
+  display: block;
+}
+
+.header h1 {
+  color: #0051BA;
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.navbar {
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid #e9ecef;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #495057;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 10px 20px;
+  border-radius: 50px;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: #f1f3f5;
+  color: #0051BA;
+}
+
+.nav-link.active {
+  background-color: #0051BA;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 81, 186, 0.3);
+}
+
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .costco-logo {
+    width: 200px;
+    height: 60px;
+  }
+
+  .navbar ul {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .nav-link {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+}
