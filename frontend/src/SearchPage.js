@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './SearchPage.css';
+import Calendar from './components/Calendar';
 
 const SearchPage = ({ user, onLogout }) => {
   const [searchType, setSearchType] = useState('items');
@@ -237,18 +238,20 @@ const SearchPage = ({ user, onLogout }) => {
         <h1>Food Court Nutrition Tracker</h1>
       </header>
       
-      <div className="sample-queries">
-        <h3>Quick Searches</h3>
-        <div className="sample-buttons">
-          <button onClick={() => runSampleQuery('pizza')} className="sample-btn">Search Pizza</button>
-          <button onClick={() => runSampleQuery('highProtein')} className="sample-btn">High Protein</button>
-          <button onClick={() => runSampleQuery('lowCalorie')} className="sample-btn">Low Calorie</button>
-          <button onClick={() => runSampleQuery('userOrders')} className="sample-btn">My Orders</button>
-          <button onClick={() => runSampleQuery('stats')} className="sample-btn">Statistics</button>
-        </div>
-      </div>
+      <div className="main-layout">
+        <div className="content-section">
+          <div className="sample-queries">
+            <h3>Quick Searches</h3>
+            <div className="sample-buttons">
+              <button onClick={() => runSampleQuery('pizza')} className="sample-btn">Search Pizza</button>
+              <button onClick={() => runSampleQuery('highProtein')} className="sample-btn">High Protein</button>
+              <button onClick={() => runSampleQuery('lowCalorie')} className="sample-btn">Low Calorie</button>
+              <button onClick={() => runSampleQuery('userOrders')} className="sample-btn">My Orders</button>
+              <button onClick={() => runSampleQuery('stats')} className="sample-btn">Statistics</button>
+            </div>
+          </div>
       
-      <div className="search-controls">
+          <div className="search-controls">
         <div className="search-type-selector">
           <label>Search Type</label>
           <select value={searchType} onChange={(e) => setSearchType(e.target.value)}>
@@ -334,8 +337,12 @@ const SearchPage = ({ user, onLogout }) => {
         </button>
       </div>
 
-      <div className="results-container">
-        {renderResults()}
+          <div className="results-container">
+            {renderResults()}
+          </div>
+        </div>
+
+        <Calendar user={user} />
       </div>
     </div>
   );
