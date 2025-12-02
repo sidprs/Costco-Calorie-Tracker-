@@ -10,19 +10,6 @@
     padding-bottom: 40px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   }
-
-  .main-layout {
-    display: flex;
-    gap: 24px;
-    max-width: 1500px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-
-  .content-section {
-    flex: 1;
-    min-width: 0;
-  }
   
   .header {
     background: white;
@@ -82,7 +69,9 @@
   }
   
   .sample-queries {
-    margin-bottom: 30px;
+    max-width: 1200px;
+    margin: 0 auto 30px;
+    padding: 0 20px;
   }
   
   .sample-queries h3 {
@@ -124,7 +113,8 @@
   }
   
   .search-controls {
-    margin-bottom: 30px;
+    max-width: 1200px;
+    margin: 0 auto 30px;
     padding: 25px;
     background: white;
     border-radius: 10px;
@@ -258,7 +248,9 @@
   }
   
   .results-container {
-    /* Container for results */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
   }
   
   .loading {
@@ -538,9 +530,5 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 8px;
-    }
-
-    .main-layout {
-      flex-direction: column-reverse;
     }
   }
