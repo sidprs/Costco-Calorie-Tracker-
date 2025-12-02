@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './SearchPage.css';
 
-const SearchPage = () => {
+const SearchPage = ({ user, onLogout }) => {
   const [searchType, setSearchType] = useState('items');
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
@@ -11,7 +11,7 @@ const SearchPage = () => {
   });
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [userId, setUserId] = useState('1');
+  const [userId, setUserId] = useState(user?.id?.toString() || '1');
 
   const API_URL = 'http://localhost:3001/api';
 
@@ -220,6 +220,14 @@ const SearchPage = () => {
   return (
     <div className="search-page">
       <header className="header">
+        <div className="header-top">
+          {user && (
+            <div className="user-info">
+              <span className="user-greeting">Hello, {user.firstName}!</span>
+              <button className="logout-btn" onClick={onLogout}>Logout</button>
+            </div>
+          )}
+        </div>
         <svg className="costco-logo" viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg">
           <rect x="10" y="10" width="280" height="60" rx="8" fill="#0051BA" stroke="#003D8F" strokeWidth="2"/>
           <text x="150" y="52" fontSize="32" fontWeight="bold" fill="white" textAnchor="middle" fontFamily="Arial, sans-serif">
