@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './SearchPage.css';
+import Calendar from './components/Calendar';
 
 const SearchPage = ({ user, addToCart }) => {
   const [searchType, setSearchType] = useState('items');
@@ -127,7 +128,38 @@ const SearchPage = ({ user, addToCart }) => {
 
   return (
     <div className="search-page">
-      <div className="search-controls">
+      <header className="header">
+        <div className="header-top">
+          {user && (
+            <div className="user-info">
+              <span className="user-greeting">Hello, {user.firstName}!</span>
+              <button className="logout-btn" onClick={onLogout}>Logout</button>
+            </div>
+          )}
+        </div>
+        <svg className="costco-logo" viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="280" height="60" rx="8" fill="#0051BA" stroke="#003D8F" strokeWidth="2"/>
+          <text x="150" y="52" fontSize="32" fontWeight="bold" fill="white" textAnchor="middle" fontFamily="Arial, sans-serif">
+            COSTCO
+          </text>
+        </svg>
+        <h1>Food Court Nutrition Tracker</h1>
+      </header>
+      
+      <div className="main-layout">
+        <div className="content-section">
+          <div className="sample-queries">
+            <h3>Quick Searches</h3>
+            <div className="sample-buttons">
+              <button onClick={() => runSampleQuery('pizza')} className="sample-btn">Search Pizza</button>
+              <button onClick={() => runSampleQuery('highProtein')} className="sample-btn">High Protein</button>
+              <button onClick={() => runSampleQuery('lowCalorie')} className="sample-btn">Low Calorie</button>
+              <button onClick={() => runSampleQuery('userOrders')} className="sample-btn">My Orders</button>
+              <button onClick={() => runSampleQuery('stats')} className="sample-btn">Statistics</button>
+            </div>
+          </div>
+      
+          <div className="search-controls">
         <div className="search-type-selector">
           <label>Search Type</label>
           <select value={searchType} onChange={(e) => setSearchType(e.target.value)}>
@@ -197,8 +229,12 @@ const SearchPage = ({ user, addToCart }) => {
         </button>
       </div>
 
-      <div className="results-container">
-        {renderResults()}
+          <div className="results-container">
+            {renderResults()}
+          </div>
+        </div>
+
+        <Calendar user={user} />
       </div>
     </div>
   );
